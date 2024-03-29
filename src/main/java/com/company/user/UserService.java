@@ -1,13 +1,11 @@
 package com.company.user;
 
+import com.company.Messages;
 import com.company.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,7 +28,7 @@ public class UserService {
         Optional<User> userFoundByEmail = userRepository.findUserByEmail(user.getEmail());
 
         if (userFoundByEmail.isPresent()) {
-            throw new IllegalStateException("email taken");
+            throw new IllegalStateException(String.format(Messages.EMAIL_TAKEN, user.getEmail()));
         }
 
         userRepository.save(user);
@@ -40,7 +38,7 @@ public class UserService {
         boolean exists = userRepository.existsById(userId);
 
         if (!exists) {
-            throw new IllegalStateException("student with id " + userId + " does not exists");
+            throw new IllegalStateException(String.format(Messages.USER_NOT_FOUND, userId));
         } else {
             userRepository.deleteById(userId);
         }
@@ -49,17 +47,17 @@ public class UserService {
     @Transactional
     public void updateUser(Long userId, String firstname, String email) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalStateException("student with id " + userId + " does not exists"));
+                .orElseThrow(() -> new IllegalStateException(String.format(Messages.USER_NOT_FOUND, userId)));
 
         if (firstname != null && !firstname.isEmpty() && !Objects.equals(user.getFirstName(), firstname)) {
             user.setFirstName(firstname);
         }
 
         if (email != null && !email.isEmpty() && !Objects.equals(user.getEmail(), email)) {
-            Optional<User> userFoundByEmail = userRepository.findUserByEmail(user.getEmail());
+            Optional<User> userFoundByEmail = userRepository.findUserByEmail(email);
 
             if (userFoundByEmail.isPresent()) {
-                throw new IllegalStateException("email taken");
+                throw new IllegalStateException(String.format(Messages.EMAIL_TAKEN, email));
             }
             user.setEmail(email);
         }
