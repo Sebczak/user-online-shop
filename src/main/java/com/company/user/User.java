@@ -1,6 +1,7 @@
 package com.company.user;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
 import java.time.Period;
