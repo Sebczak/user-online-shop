@@ -1,7 +1,8 @@
-package com.company.user;
+package com.company.sevices;
 
 import com.company.Messages;
-import com.company.user.repository.UserRepository;
+import com.company.entities.User;
+import com.company.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

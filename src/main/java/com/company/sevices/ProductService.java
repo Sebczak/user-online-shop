@@ -1,7 +1,8 @@
-package com.company.product;
+package com.company.sevices;
 
 import com.company.Messages;
-import com.company.product.repository.ProductRepository;
+import com.company.entities.Product;
+import com.company.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

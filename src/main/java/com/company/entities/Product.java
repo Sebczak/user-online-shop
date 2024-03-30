@@ -1,4 +1,4 @@
-package com.company.product;
+package com.company.entities;
 
 import jakarta.persistence.*;
 
