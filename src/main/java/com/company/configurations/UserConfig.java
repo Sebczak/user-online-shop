@@ -1,6 +1,7 @@
-package com.company.user;
+package com.company.configurations;
 
-import com.company.user.repository.UserRepository;
+import com.company.entities.User;
+import com.company.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

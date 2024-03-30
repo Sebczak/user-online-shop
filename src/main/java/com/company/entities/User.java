@@ -1,4 +1,4 @@
-package com.company.user;
+package com.company.entities;
 
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;

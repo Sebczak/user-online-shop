@@ -1,5 +1,7 @@
-package com.company.user;
+package com.company.controllers;
 
+import com.company.sevices.UserService;
+import com.company.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
