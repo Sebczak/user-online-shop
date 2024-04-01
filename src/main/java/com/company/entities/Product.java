@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "product")
 public class Product {
 
     @Id
@@ -18,13 +18,14 @@ public class Product {
             strategy = GenerationType.SEQUENCE,
             generator = "product_sequence"
     )
-    private long id;
+    @Column( name = "product_id")
+    private long productId;
     private String productName;
     private String productDescription;
     private double price;
 
-    public Product(long id, String productName, String productDescription, double price) {
-        this.id = id;
+    public Product(long productId, String productName, String productDescription, double price) {
+        this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.price = price;
@@ -39,12 +40,12 @@ public class Product {
     public Product() {
     }
 
-    public long getId() {
-        return id;
+    public long getProductId() {
+        return productId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -74,7 +75,7 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
+                "productId=" + productId +
                 ", productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +
                 ", price=" + price +
@@ -86,11 +87,11 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id && Double.compare(price, product.price) == 0 && Objects.equals(productName, product.productName) && Objects.equals(productDescription, product.productDescription);
+        return productId == product.productId && Double.compare(price, product.price) == 0 && Objects.equals(productName, product.productName) && Objects.equals(productDescription, product.productDescription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productName, productDescription, price);
+        return Objects.hash(productId, productName, productDescription, price);
     }
 }

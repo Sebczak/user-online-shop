@@ -5,4 +5,5 @@ public class Messages {
     public static final String PRODUCT_ID_NOT_FOUND = "Product with id: %s cannot be found.";
     public static final String USER_NOT_FOUND = "User with id: %s cannot be found.";
     public static final String EMAIL_TAKEN = "Email: %s taken.";
+    public static final String BUCKET_NOT_FOUND = "Basket with id: %s not found.";
 }
