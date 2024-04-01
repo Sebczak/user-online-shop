@@ -1,7 +1,6 @@
 package com.company.entities;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -19,16 +18,20 @@ public class User {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
     private String firstName;
     private String lastName;
     private String email;
     private LocalDate dateOfBirth;
     @Transient
     private Integer age;
+    @OneToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "bucket_id")
+    private ProductBucket productBucket;
 
-    public User(Long id, String firstName, String lastName, String email, LocalDate dateOfBirth) {
-        this.id = id;
+    public User(Long userId, String firstName, String lastName, String email, LocalDate dateOfBirth) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -46,11 +49,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return userId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getFirstName() {
@@ -93,10 +96,18 @@ public class User {
         this.age = age;
     }
 
+    public ProductBucket getProductBucket() {
+        return productBucket;
+    }
+
+    public void setProductBucket(ProductBucket productBucket) {
+        this.productBucket = productBucket;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
+                "id=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
