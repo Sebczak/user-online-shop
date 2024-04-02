@@ -1,44 +1,44 @@
 package com.company.controllers;
 
 import com.company.entities.Product;
-import com.company.entities.ProductBucket;
-import com.company.sevices.ProductBucketService;
+import com.company.entities.ProductBasket;
+import com.company.sevices.ProductBasketService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/product_bucket")
-public class ProductBucketController {
+@RequestMapping(path = "api/v1/product_basket")
+public class ProductBasketController {
 
-    private final ProductBucketService productBucketService;
+    private final ProductBasketService productBasketService;
 
-    public ProductBucketController(ProductBucketService productBucketService) {
-        this.productBucketService = productBucketService;
+    public ProductBasketController(ProductBasketService productBasketService) {
+        this.productBasketService = productBasketService;
     }
 
     @GetMapping
-    public List<ProductBucket> getProductsFromBucket() {
-        return productBucketService.getAllProductsFromBucket();
+    public List<ProductBasket> getProductsFromBasket() {
+        return productBasketService.getAllProductsFromBasket();
     }
 
     @PostMapping
-    public void createBucket(@RequestBody ProductBucket productBucket) {
-        productBucketService.createBucket(productBucket);
+    public void createBasket(@RequestBody ProductBasket productBasket) {
+        productBasketService.createBasket(productBasket);
     }
 
-    @PutMapping(path = "{bucketId}")
-    public void updateProductBucket(@PathVariable Long bucketId, @RequestParam(required = false) ProductBucket productBucket) {
-        productBucketService.updateProductBucket(bucketId, productBucket);
+    @PutMapping(path = "{basketId}")
+    public void updateProductBasket(@PathVariable Long basketId, @RequestParam(required = false) ProductBasket productBasket) {
+        productBasketService.updateProductBasket(basketId, productBasket);
     }
 
-    @DeleteMapping(path = "{bucketId}/{product}")
-    public void deleteProductFromBucket(@PathVariable Long bucketId, @RequestParam(required = false) Product product) {
-        productBucketService.deleteProductFromBucket(bucketId, product);
+    @DeleteMapping(path = "{basketId}/{product}")
+    public void deleteProductFromBasket(@PathVariable Long basketId, @RequestParam(required = false) Product product) {
+        productBasketService.deleteProductFromBasket(basketId, product);
     }
 
-    @DeleteMapping(path = "{bucketId}")
-    public void deleteBucket(@PathVariable Long bucketId) {
-        productBucketService.deleteBucket(bucketId);
+    @DeleteMapping(path = "{basketId}")
+    public void deleteBasket(@PathVariable Long basketId) {
+        productBasketService.deleteBasket(basketId);
     }
 }

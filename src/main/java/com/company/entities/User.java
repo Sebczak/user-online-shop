@@ -28,7 +28,7 @@ public class User {
     private Integer age;
     @OneToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "bucket_id")
-    private ProductBucket productBucket;
+    private ProductBasket productBasket;
 
     public User(Long userId, String firstName, String lastName, String email, LocalDate dateOfBirth) {
         this.userId = userId;
@@ -96,12 +96,12 @@ public class User {
         this.age = age;
     }
 
-    public ProductBucket getProductBucket() {
-        return productBucket;
+    public ProductBasket getProductBucket() {
+        return productBasket;
     }
 
-    public void setProductBucket(ProductBucket productBucket) {
-        this.productBucket = productBucket;
+    public void setProductBucket(ProductBasket productBasket) {
+        this.productBasket = productBasket;
     }
 
     @Override
