@@ -18,14 +18,16 @@ public class ProductConfig {
                     1L,
                     "Bike",
                     "Red Bike",
-                    150.99
+                    150.99,
+                    5
             );
 
             Product car = new Product(
                     2L,
                     "Car",
                     "Blue car",
-                    15000.00
+                    15000.00,
+                    10
             );
             repository.saveAll(List.of(bike, car));
         };

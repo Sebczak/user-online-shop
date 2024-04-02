@@ -24,7 +24,7 @@ public class ProductServiceTestSuite {
         //Given
         when(productService.getProducts()).thenReturn(
                 List.of(
-                        new Product(1L, "Bike", "Red Bike", 150.99)
+                        new Product(1L, "Bike", "Red Bike", 150.99, 1)
                 )
         );
         //When
@@ -40,11 +40,11 @@ public class ProductServiceTestSuite {
         //Given
         when(productService.getProducts()).thenReturn(
                 List.of(
-                        new Product(1L, "Bike", "Red Bike", 100.99),
-                        new Product(2L, "Car", "Blue car", 15000.00),
-                        new Product(3L, "Motorcycle", "Green motorcycle", 999.99),
-                        new Product(4L, "Scooter", "White scooter", 350.00),
-                        new Product(5L, "Plane", "Long plane", 150000.99)
+                        new Product(1L, "Bike", "Red Bike", 100.99, 1),
+                        new Product(2L, "Car", "Blue car", 15000.00, 1),
+                        new Product(3L, "Motorcycle", "Green motorcycle", 999.99, 1),
+                        new Product(4L, "Scooter", "White scooter", 350.00, 1),
+                        new Product(5L, "Plane", "Long plane", 150000.99, 1)
                 )
         );
 
@@ -71,7 +71,7 @@ public class ProductServiceTestSuite {
     void testGetOneProductUsingId() {
         //Given
         when(productService.getProduct(anyLong())).thenReturn(
-                Optional.of(new Product(1L, "Bike", "Red Bike", 150.99))
+                Optional.of(new Product(1L, "Bike", "Red Bike", 150.99, 1))
 
         );
 
@@ -89,11 +89,11 @@ public class ProductServiceTestSuite {
         when(productService.getProduct(anyLong())).thenAnswer(invocation -> {
                     Long id = invocation.getArgument(0);
                     return switch (id.intValue()) {
-                        case 1 -> Optional.of(new Product(1L, "Bike", "Red Bike", 100.99));
-                        case 2 -> Optional.of(new Product(2L, "Car", "Blue car", 15000.00));
-                        case 3 -> Optional.of(new Product(3L, "Motorcycle", "Green motorcycle", 999.99));
-                        case 4 -> Optional.of(new Product(4L, "Scooter", "White scooter", 350.00));
-                        case 5 -> Optional.of(new Product(5L, "Plane", "Long plane", 150000.99));
+                        case 1 -> Optional.of(new Product(1L, "Bike", "Red Bike", 100.99, 1));
+                        case 2 -> Optional.of(new Product(2L, "Car", "Blue car", 15000.00, 1));
+                        case 3 -> Optional.of(new Product(3L, "Motorcycle", "Green motorcycle", 999.99, 1));
+                        case 4 -> Optional.of(new Product(4L, "Scooter", "White scooter", 350.00, 1));
+                        case 5 -> Optional.of(new Product(5L, "Plane", "Long plane", 150000.99, 1));
                         default -> Optional.empty();
                     };
                 }
@@ -123,7 +123,7 @@ public class ProductServiceTestSuite {
         //Given
 
         //When
-        productService.addProductToDb(new Product(1L, "Car", "Brown Car", 10.1));
+        productService.addProductToDb(new Product(1L, "Car", "Brown Car", 10.1, 1));
         List<Product> products = productService.getProducts();
         System.out.println(products);
 
