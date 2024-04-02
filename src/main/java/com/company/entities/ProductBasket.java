@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product_bucket")
-public class ProductBucket {
+public class ProductBasket {
 
     @Id
     @SequenceGenerator(
@@ -50,7 +50,7 @@ public class ProductBucket {
     )
     private BigDecimal totalPrice;
 
-    public ProductBucket(Long bucketId, String bucketName, List<Product> products, int quantity, BigDecimal totalPrice) {
+    public ProductBasket(Long bucketId, String bucketName, List<Product> products, int quantity, BigDecimal totalPrice) {
         this.bucketId = bucketId;
         this.bucketName = bucketName;
         this.products = products;
@@ -58,14 +58,14 @@ public class ProductBucket {
         this.totalPrice = totalPrice;
     }
 
-    public ProductBucket(String bucketName, List<Product> products, int quantity, BigDecimal totalPrice) {
+    public ProductBasket(String bucketName, List<Product> products, int quantity, BigDecimal totalPrice) {
         this.bucketName = bucketName;
         this.products = products;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }
 
-    public ProductBucket() {
+    public ProductBasket() {
     }
 
     public Long getBucketId() {

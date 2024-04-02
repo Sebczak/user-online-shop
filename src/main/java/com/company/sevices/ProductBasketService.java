@@ -2,41 +2,41 @@ package com.company.sevices;
 
 import com.company.Messages;
 import com.company.entities.Product;
-import com.company.entities.ProductBucket;
-import com.company.repositories.ProductBucketRepository;
+import com.company.entities.ProductBasket;
+import com.company.repositories.ProductBasketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ProductBucketService {
+public class ProductBasketService {
 
-    private final ProductBucketRepository productBucketRepository;
+    private final ProductBasketRepository productBasketRepository;
 
-    public ProductBucketService(ProductBucketRepository productBucketRepository) {
-        this.productBucketRepository = productBucketRepository;
+    public ProductBasketService(ProductBasketRepository productBasketRepository) {
+        this.productBasketRepository = productBasketRepository;
     }
 
-    public List<ProductBucket> getAllProductsFromBucket() {
-        return productBucketRepository.findAll();
+    public List<ProductBasket> getAllProductsFromBasket() {
+        return productBasketRepository.findAll();
     }
 
-    public void createBucket(ProductBucket productBucket) {
-        productBucketRepository.save(productBucket);
+    public void createBasket(ProductBasket productBasket) {
+        productBasketRepository.save(productBasket);
     }
 
-    public void updateProductBucket(Long bucketId, ProductBucket productBucket) {
-        ProductBucket bucket = productBucketRepository.findById(bucketId)
+    public void updateProductBasket(Long bucketId, ProductBasket productBasket) {
+        ProductBasket bucket = productBasketRepository.findById(bucketId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, bucketId)));
 
-        bucket.setBucketName(productBucket.getBucketName());
-        bucket.setProducts(productBucket.getProducts());
-        bucket.setQuantity(productBucket.getQuantity());
+        bucket.setBucketName(productBasket.getBucketName());
+        bucket.setProducts(productBasket.getProducts());
+        bucket.setQuantity(productBasket.getQuantity());
     }
 
-    public void deleteProductFromBucket(Long bucketId, Product product) {
-        boolean bucketExists = productBucketRepository.existsById(bucketId);
-        ProductBucket bucket = productBucketRepository.findById(bucketId)
+    public void deleteProductFromBasket(Long bucketId, Product product) {
+        boolean bucketExists = productBasketRepository.existsById(bucketId);
+        ProductBasket bucket = productBasketRepository.findById(bucketId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, bucketId)));
 
         if (bucketExists) {
@@ -46,11 +46,11 @@ public class ProductBucketService {
         }
     }
 
-    public void deleteBucket(Long bucketId) {
-        boolean bucketExists = productBucketRepository.existsById(bucketId);
+    public void deleteBasket(Long bucketId) {
+        boolean bucketExists = productBasketRepository.existsById(bucketId);
 
         if (bucketExists) {
-            productBucketRepository.deleteById(bucketId);
+            productBasketRepository.deleteById(bucketId);
         } else {
             throw new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, bucketId));
         }
