@@ -23,18 +23,21 @@ public class Product {
     private String productName;
     private String productDescription;
     private double price;
+    private int productQuantity;
 
-    public Product(long productId, String productName, String productDescription, double price) {
+    public Product(long productId, String productName, String productDescription, double price, int productQuantity) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.price = price;
+        this.productQuantity = productQuantity;
     }
 
-    public Product(String productName, String productDescription, double price) {
+    public Product(String productName, String productDescription, double price, int productQuantity) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.price = price;
+        this.productQuantity = productQuantity;
     }
 
     public Product() {
@@ -72,6 +75,14 @@ public class Product {
         this.price = price;
     }
 
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -79,6 +90,7 @@ public class Product {
                 ", productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +
                 ", price=" + price +
+                ", productQuantity=" + productQuantity +
                 '}';
     }
 
@@ -87,11 +99,11 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return productId == product.productId && Double.compare(price, product.price) == 0 && Objects.equals(productName, product.productName) && Objects.equals(productDescription, product.productDescription);
+        return productId == product.productId && Double.compare(price, product.price) == 0 && productQuantity == product.productQuantity && Objects.equals(productName, product.productName) && Objects.equals(productDescription, product.productDescription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, productName, productDescription, price);
+        return Objects.hash(productId, productName, productDescription, price, productQuantity);
     }
 }
