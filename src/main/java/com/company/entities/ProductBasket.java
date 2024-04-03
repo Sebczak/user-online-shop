@@ -23,11 +23,6 @@ public class ProductBasket {
     @Column(name = "basket_id")
     private Long basketId;
     @Column(
-            name = "basket_name",
-            nullable = false
-    )
-    private String basketName;
-    @Column(
             name = "product",
             nullable = false
     )
@@ -46,19 +41,18 @@ public class ProductBasket {
             name = "total_price"
     )
     private BigDecimal totalPrice;
-    private String basketOwner;
+    @OneToOne
+    private User basketOwner;
 
-    public ProductBasket(Long basketId, String basketName, List<Product> products, int quantityOfProductInBasket, BigDecimal totalPrice, String basketOwner) {
+    public ProductBasket(Long basketId, List<Product> products, int quantityOfProductInBasket, BigDecimal totalPrice, User basketOwner) {
         this.basketId = basketId;
-        this.basketName = basketName;
         this.products = products;
         this.quantityOfProductInBasket = quantityOfProductInBasket;
         this.totalPrice = totalPrice;
         this.basketOwner = basketOwner;
     }
 
-    public ProductBasket(String basketName, List<Product> products, String basketOwner) {
-        this.basketName = basketName;
+    public ProductBasket(List<Product> products, User basketOwner) {
         this.products = products;
         this.basketOwner = basketOwner;
     }
@@ -72,14 +66,6 @@ public class ProductBasket {
 
     public void setBasketId(Long basketId) {
         this.basketId = basketId;
-    }
-
-    public String getBasketName() {
-        return basketName;
-    }
-
-    public void setBasketName(String basketName) {
-        this.basketName = basketName;
     }
 
     public int getQuantityOfProductInBasket() {
@@ -106,11 +92,11 @@ public class ProductBasket {
         this.products = products;
     }
 
-    public String getBasketOwner() {
+    public User getBasketOwner() {
         return basketOwner;
     }
 
-    public void setBasketOwner(String basketOwner) {
+    public void setBasketOwner(User basketOwner) {
         this.basketOwner = basketOwner;
     }
 }

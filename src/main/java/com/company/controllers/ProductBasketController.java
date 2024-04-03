@@ -27,14 +27,19 @@ public class ProductBasketController {
         productBasketService.createBasket(productBasket);
     }
 
+    @PostMapping(path = "{basketId}/{productId}")
+    public void addProductToBasket(@PathVariable Long basketId,@PathVariable Long productId) {
+        productBasketService.addProductToBasket(basketId, productId);
+    }
+
     @PutMapping(path = "{basketId}")
     public void updateProductBasket(@PathVariable Long basketId, @RequestParam(required = false) ProductBasket productBasket) {
         productBasketService.updateProductBasket(basketId, productBasket);
     }
 
-    @DeleteMapping(path = "{basketId}/{product}")
-    public void deleteProductFromBasket(@PathVariable Long basketId, @RequestParam(required = false) Product product) {
-        productBasketService.deleteProductFromBasket(basketId, product);
+    @DeleteMapping(path = "{basketId}/{productId}")
+    public void deleteProductFromBasket(@PathVariable Long basketId,@PathVariable Long productId) {
+        productBasketService.deleteProductFromBasket(basketId, productId);
     }
 
     @DeleteMapping(path = "{basketId}")
