@@ -4,18 +4,24 @@ import com.company.Messages;
 import com.company.entities.Product;
 import com.company.entities.ProductBasket;
 import com.company.repositories.ProductBasketRepository;
+import com.company.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductBasketService {
 
     private final ProductBasketRepository productBasketRepository;
+    private final ProductRepository productRepository;
 
-    public ProductBasketService(ProductBasketRepository productBasketRepository) {
+    public ProductBasketService(ProductBasketRepository productBasketRepository, ProductRepository productRepository) {
         this.productBasketRepository = productBasketRepository;
+        this.productRepository = productRepository;
     }
 
     public List<ProductBasket> getAllProductsFromBasket() {
@@ -26,34 +32,36 @@ public class ProductBasketService {
         productBasketRepository.save(productBasket);
     }
 
-    public void updateProductBasket(Long basketId, ProductBasket productBasket) {
+    public void updateProductBasket(Long basketId, @RequestBody ProductBasket productBasket) {
         ProductBasket basket = productBasketRepository.findById(basketId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId)));
 
-        basket.setBasketName(productBasket.getBasketName());
-        basket.setProducts(productBasket.getProducts());
-        basket.setQuantityOfProductInBasket(productBasket.getQuantityOfProductInBasket());
     }
 
-    public void addProductToBasket(Long basketId, Product product) {
+    public void addProductToBasket(Long basketId, Long productId) {
         ProductBasket basket = productBasketRepository.findById(basketId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId)));
 
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productId)));
+
         basket.getProducts().add(product);
+        int quantityOfProducts = product.getProductQuantity();
+        basket.setQuantityOfProductInBasket(quantityOfProducts);
 
         productBasketRepository.save(basket);
     }
 
-    public void deleteProductFromBasket(Long basketId, Product product) {
-        boolean basketExists = productBasketRepository.existsById(basketId);
+    public void deleteProductFromBasket(Long basketId, Long productId) {
         ProductBasket basket = productBasketRepository.findById(basketId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId)));
 
-        if (basketExists) {
-            basket.getProducts().remove(product);
-        } else {
-            throw new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId));
-        }
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productId)));
+
+        basket.getProducts().remove(product);
+
+        productBasketRepository.save(basket);
     }
 
     public void deleteBasket(Long basketId) {
@@ -64,5 +72,9 @@ public class ProductBasketService {
         } else {
             throw new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId));
         }
+    }
+
+    public void reduceQuantityOrProductsWhenProductIsAddedToBasket(Product product, ProductBasket productBasket) {
+
     }
 }

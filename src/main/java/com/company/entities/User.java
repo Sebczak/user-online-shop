@@ -24,9 +24,7 @@ public class User {
     private String lastName;
     private String email;
     private LocalDate dateOfBirth;
-    @Transient
-    private Integer age;
-    @OneToOne( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "bucket_id")
     private ProductBasket productBasket;
 
@@ -92,10 +90,6 @@ public class User {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public ProductBasket getProductBucket() {
         return productBasket;
     }
@@ -112,7 +106,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", age=" + age +
+                ", age=" + getAge() +
                 '}';
     }
 }
