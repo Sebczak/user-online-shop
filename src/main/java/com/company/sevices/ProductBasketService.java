@@ -7,11 +7,8 @@ import com.company.repositories.ProductBasketRepository;
 import com.company.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductBasketService {
@@ -46,8 +43,6 @@ public class ProductBasketService {
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productId)));
 
         basket.getProducts().add(product);
-        int quantityOfProducts = product.getProductQuantity();
-        basket.setQuantityOfProductInBasket(quantityOfProducts);
 
         productBasketRepository.save(basket);
     }

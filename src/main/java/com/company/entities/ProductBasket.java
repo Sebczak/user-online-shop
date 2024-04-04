@@ -36,7 +36,13 @@ public class ProductBasket {
     @Column(
             name = "quantity"
     )
-    private int quantityOfProductInBasket;
+    @OneToMany(
+            targetEntity = ProductBasketItem.class,
+            mappedBy = "productBasket",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<ProductBasketItem> productBasketItem = new ArrayList<>();
     @Column(
             name = "total_price"
     )
@@ -44,16 +50,17 @@ public class ProductBasket {
     @OneToOne
     private User basketOwner;
 
-    public ProductBasket(Long basketId, List<Product> products, int quantityOfProductInBasket, BigDecimal totalPrice, User basketOwner) {
+    public ProductBasket(Long basketId, List<Product> products, List<ProductBasketItem> productBasketItem, BigDecimal totalPrice, User basketOwner) {
         this.basketId = basketId;
         this.products = products;
-        this.quantityOfProductInBasket = quantityOfProductInBasket;
+        this.productBasketItem = productBasketItem;
         this.totalPrice = totalPrice;
         this.basketOwner = basketOwner;
     }
 
-    public ProductBasket(List<Product> products, User basketOwner) {
+    public ProductBasket(List<Product> products, List<ProductBasketItem> productBasketItem, User basketOwner) {
         this.products = products;
+        this.productBasketItem = productBasketItem;
         this.basketOwner = basketOwner;
     }
 
@@ -68,12 +75,12 @@ public class ProductBasket {
         this.basketId = basketId;
     }
 
-    public int getQuantityOfProductInBasket() {
-        return quantityOfProductInBasket;
+    public List<ProductBasketItem> getQuantityOfProductInBasket() {
+        return productBasketItem;
     }
 
-    public void setQuantityOfProductInBasket(int quantityOfProductInBasket) {
-        this.quantityOfProductInBasket = quantityOfProductInBasket;
+    public void setQuantityOfProductInBasket(List<ProductBasketItem> productBasketItem) {
+        this.productBasketItem = productBasketItem;
     }
 
     public BigDecimal getTotalPrice() {
