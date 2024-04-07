@@ -2,6 +2,7 @@ package com.company.entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -9,23 +10,15 @@ import java.util.Objects;
 public class Product {
 
     @Id
-    @SequenceGenerator(
-            name = "product_sequence",
-            sequenceName = "product_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "product_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "product_id")
     private long productId;
     private String productName;
     private String productDescription;
-    private double price;
+    private BigDecimal price;
     private int productQuantity;
 
-    public Product(long productId, String productName, String productDescription, double price, int productQuantity) {
+    public Product(long productId, String productName, String productDescription, BigDecimal price, int productQuantity) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -33,7 +26,7 @@ public class Product {
         this.productQuantity = productQuantity;
     }
 
-    public Product(String productName, String productDescription, double price, int productQuantity) {
+    public Product(String productName, String productDescription, BigDecimal price, int productQuantity) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.price = price;
@@ -67,11 +60,11 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -99,7 +92,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return productId == product.productId && Double.compare(price, product.price) == 0 && productQuantity == product.productQuantity && Objects.equals(productName, product.productName) && Objects.equals(productDescription, product.productDescription);
+        return productId == product.productId && productQuantity == product.productQuantity && Objects.equals(productName, product.productName) && Objects.equals(productDescription, product.productDescription) && Objects.equals(price, product.price);
     }
 
     @Override
