@@ -1,65 +1,45 @@
 package com.company.entities;
 
+import com.company.domain.ProductBasketItemDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product_basket")
 public class ProductBasket {
 
     @Id
-    @SequenceGenerator(
-            name = "product_basket_sequence",
-            sequenceName = "product_basket_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "product_basket_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "basket_id")
     private Long basketId;
-    @Column(
-            name = "product",
-            nullable = false
-    )
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "join_product_basket",
-            joinColumns = {@JoinColumn(name = "basket_id", referencedColumnName = "basket_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "product_id")}
-    )
-    private List<Product> products = new ArrayList<>();
-    @Column(
-            name = "quantity"
-    )
+    @Column(name = "products")
     @OneToMany(
             targetEntity = ProductBasketItem.class,
             mappedBy = "productBasket",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<ProductBasketItem> productBasketItem = new ArrayList<>();
-    @Column(
-            name = "total_price"
-    )
+    private List<ProductBasketItemDto> productBasketItem = new ArrayList<>();
+    @Column(name = "total_price")
     private BigDecimal totalPrice;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User basketOwner;
 
-    public ProductBasket(Long basketId, List<Product> products, List<ProductBasketItem> productBasketItem, BigDecimal totalPrice, User basketOwner) {
+    public ProductBasket(Long basketId, List<ProductBasketItemDto> productBasketItem, BigDecimal totalPrice, User basketOwner) {
         this.basketId = basketId;
-        this.products = products;
         this.productBasketItem = productBasketItem;
         this.totalPrice = totalPrice;
         this.basketOwner = basketOwner;
     }
 
-    public ProductBasket(List<Product> products, List<ProductBasketItem> productBasketItem, User basketOwner) {
-        this.products = products;
+    public ProductBasket(List<ProductBasketItemDto> productBasketItem, User basketOwner) {
         this.productBasketItem = productBasketItem;
         this.basketOwner = basketOwner;
     }
@@ -75,11 +55,11 @@ public class ProductBasket {
         this.basketId = basketId;
     }
 
-    public List<ProductBasketItem> getQuantityOfProductInBasket() {
+    public List<ProductBasketItemDto> getProductBasketItem() {
         return productBasketItem;
     }
 
-    public void setQuantityOfProductInBasket(List<ProductBasketItem> productBasketItem) {
+    public void setProductBasketItem(List<ProductBasketItemDto> productBasketItem) {
         this.productBasketItem = productBasketItem;
     }
 
@@ -91,19 +71,34 @@ public class ProductBasket {
         this.totalPrice = totalPrice;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     public User getBasketOwner() {
         return basketOwner;
     }
 
     public void setBasketOwner(User basketOwner) {
         this.basketOwner = basketOwner;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductBasket{" +
+                "basketId=" + basketId +
+                ", productBasketItem=" + productBasketItem +
+                ", totalPrice=" + totalPrice +
+                ", basketOwner=" + basketOwner +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductBasket that = (ProductBasket) o;
+        return Objects.equals(basketId, that.basketId) && Objects.equals(productBasketItem, that.productBasketItem) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(basketOwner, that.basketOwner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(basketId, productBasketItem, totalPrice, basketOwner);
     }
 }

@@ -7,6 +7,7 @@ import com.company.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,8 +71,8 @@ public class ProductService {
     public void updateProductPrice(Long productId, Double price) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productId)));
-        if (price != null && !price.isNaN() && !price.equals(product.getPrice())) {
-            product.setPrice(price);
+        if (price != null && !price.isNaN()) {
+            product.setPrice(new BigDecimal(price));
         }
     }
 }

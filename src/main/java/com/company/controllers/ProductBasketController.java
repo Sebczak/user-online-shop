@@ -22,14 +22,14 @@ public class ProductBasketController {
         return productBasketService.getAllProductsFromBasket();
     }
 
-    @PostMapping
-    public void createBasket(@RequestBody ProductBasket productBasket) {
-        productBasketService.createBasket(productBasket);
+    @PostMapping("{userId}")
+    public void createBasket(@PathVariable Long userId) {
+        productBasketService.createBasket(userId);
     }
 
-    @PostMapping(path = "{basketId}/{productId}")
-    public void addProductToBasket(@PathVariable Long basketId,@PathVariable Long productId) {
-        productBasketService.addProductToBasket(basketId, productId);
+    @PostMapping(path = "{userId}/{productId}")
+    public void addProductToBasket(@PathVariable Long userId,@PathVariable Long productId) {
+        productBasketService.addProductToBasket(userId, productId);
     }
 
     @PutMapping(path = "{basketId}")

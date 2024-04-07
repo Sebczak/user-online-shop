@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Configuration
@@ -18,7 +19,7 @@ public class ProductConfig {
                     1L,
                     "Bike",
                     "Red Bike",
-                    150.99,
+                    new BigDecimal("1.50"),
                     5
             );
 
@@ -26,11 +27,10 @@ public class ProductConfig {
                     2L,
                     "Car",
                     "Blue car",
-                    15000.00,
+                    new BigDecimal("2.50"),
                     10
             );
             repository.saveAll(List.of(bike, car));
         };
     }
-
 }
