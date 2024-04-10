@@ -1,13 +1,12 @@
 package com.company.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "product_basket_item")
-public class ProductBasketItem {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,22 +19,22 @@ public class ProductBasketItem {
     private int quantityOfProductItemsInBasket;
     @ManyToOne
     @JoinColumn(name = "basket_id")
-    private ProductBasket productBasket;
+    private Cart cart;
 
-    public ProductBasketItem(Long productBasketItemId, Product product, int quantityOfProductItemsInBasket,  ProductBasket productBasket) {
+    public CartItem(Long productBasketItemId, Product product, int quantityOfProductItemsInBasket, Cart cart) {
         this.productBasketItemId = productBasketItemId;
         this.product = product;
         this.quantityOfProductItemsInBasket = quantityOfProductItemsInBasket;
-        this.productBasket = productBasket;
+        this.cart = cart;
     }
 
-    public ProductBasketItem(Product product, int quantityOfProductItemsInBasket, ProductBasket productBasket) {
+    public CartItem(Product product, int quantityOfProductItemsInBasket, Cart cart) {
         this.product = product;
         this.quantityOfProductItemsInBasket = quantityOfProductItemsInBasket;
-        this.productBasket = productBasket;
+        this.cart = cart;
     }
 
-    public ProductBasketItem() {
+    public CartItem() {
     }
 
     public Long getProductBasketItemId() {
@@ -54,12 +53,12 @@ public class ProductBasketItem {
         this.product = product;
     }
 
-    public ProductBasket getProductBasket() {
-        return productBasket;
+    public Cart getProductBasket() {
+        return cart;
     }
 
-    public void setProductBasket(ProductBasket productBasket) {
-        this.productBasket = productBasket;
+    public void setProductBasket(Cart cart) {
+        this.cart = cart;
     }
 
     public int getQuantityOfProductItemsInBasket() {
@@ -76,7 +75,7 @@ public class ProductBasketItem {
                 "productBasketItemId=" + productBasketItemId +
                 ", product=" + product +
                 ", quantityOfProductItemsInBasket=" + quantityOfProductItemsInBasket +
-                ", productBasket=" + productBasket +
+                ", productBasket=" + cart +
                 '}';
     }
 
@@ -84,12 +83,12 @@ public class ProductBasketItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductBasketItem that = (ProductBasketItem) o;
-        return quantityOfProductItemsInBasket == that.quantityOfProductItemsInBasket && Objects.equals(productBasketItemId, that.productBasketItemId) && Objects.equals(product, that.product) && Objects.equals(productBasket, that.productBasket);
+        CartItem that = (CartItem) o;
+        return quantityOfProductItemsInBasket == that.quantityOfProductItemsInBasket && Objects.equals(productBasketItemId, that.productBasketItemId) && Objects.equals(product, that.product) && Objects.equals(cart, that.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productBasketItemId, product, quantityOfProductItemsInBasket, productBasket);
+        return Objects.hash(productBasketItemId, product, quantityOfProductItemsInBasket, cart);
     }
 }

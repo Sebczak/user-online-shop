@@ -1,5 +1,7 @@
 package com.company.controllers;
 
+import com.company.dtos.UserDto;
+import com.company.mapper.Mapper;
 import com.company.sevices.UserService;
 import com.company.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +14,18 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final Mapper mapper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, Mapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<UserDto> getUsers() {
+        List<User> users = userService.getUsers();
+        return mapper.toUserDtos(users);
     }
 
     @PostMapping
