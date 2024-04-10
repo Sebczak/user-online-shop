@@ -1,8 +1,5 @@
 package com.company.entities;
 
-import com.company.domain.ProductBasketItemDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -12,39 +9,38 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "product_basket")
-public class ProductBasket {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "basket_id")
     private Long basketId;
-    @Column(name = "products")
     @OneToMany(
-            targetEntity = ProductBasketItem.class,
-            mappedBy = "productBasket",
+            targetEntity = CartItem.class,
+            mappedBy = "cart",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<ProductBasketItemDto> productBasketItem = new ArrayList<>();
+    private List<CartItem> productBasketItem = new ArrayList<>();
     @Column(name = "total_price")
     private BigDecimal totalPrice;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User basketOwner;
 
-    public ProductBasket(Long basketId, List<ProductBasketItemDto> productBasketItem, BigDecimal totalPrice, User basketOwner) {
+    public Cart(Long basketId, List<CartItem> productBasketItem, BigDecimal totalPrice, User basketOwner) {
         this.basketId = basketId;
         this.productBasketItem = productBasketItem;
         this.totalPrice = totalPrice;
         this.basketOwner = basketOwner;
     }
 
-    public ProductBasket(List<ProductBasketItemDto> productBasketItem, User basketOwner) {
+    public Cart(List<CartItem> productBasketItem, User basketOwner) {
         this.productBasketItem = productBasketItem;
         this.basketOwner = basketOwner;
     }
 
-    public ProductBasket() {
+    public Cart() {
     }
 
     public Long getBasketId() {
@@ -55,11 +51,11 @@ public class ProductBasket {
         this.basketId = basketId;
     }
 
-    public List<ProductBasketItemDto> getProductBasketItem() {
+    public List<CartItem> getProductBasketItem() {
         return productBasketItem;
     }
 
-    public void setProductBasketItem(List<ProductBasketItemDto> productBasketItem) {
+    public void setProductBasketItem(List<CartItem> productBasketItem) {
         this.productBasketItem = productBasketItem;
     }
 
@@ -93,12 +89,17 @@ public class ProductBasket {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductBasket that = (ProductBasket) o;
+        Cart that = (Cart) o;
         return Objects.equals(basketId, that.basketId) && Objects.equals(productBasketItem, that.productBasketItem) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(basketOwner, that.basketOwner);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(basketId, productBasketItem, totalPrice, basketOwner);
+    }
+
+    public void addCartItem(CartItem cartItem) {
+        this.productBasketItem.add(cartItem);
+        cartItem.setProductBasket(this);
     }
 }
