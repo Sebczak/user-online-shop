@@ -82,11 +82,11 @@ public class User {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public Cart getProductBucket() {
+    public Cart getCart() {
         return cart;
     }
 
-    public void setProductBucket(Cart cart) {
+    public void setCart(Cart cart) {
         this.cart = cart;
     }
 

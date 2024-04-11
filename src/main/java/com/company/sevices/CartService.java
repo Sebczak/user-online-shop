@@ -41,15 +41,14 @@ public class CartService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.USER_NOT_FOUND, userId)));
 
-        Cart cart = user.getProductBucket();
+        Cart cart = user.getCart();
         if (cart == null) {
             cart = new Cart();
-            user.setProductBucket(cart);
-            cart.setBasketOwner(user);
+            user.setCart(cart);
+            cart.setCartOwner(user);
         }
 
         userRepository.save(user);
-        //productBasketRepository.save(productBasket);
     }
 
     public void updateProductBasket(Long basketId, @RequestBody Cart cart) {

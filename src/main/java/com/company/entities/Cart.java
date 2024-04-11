@@ -21,23 +21,27 @@ public class Cart {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<CartItem> productBasketItem = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
     @Column(name = "total_price")
     private BigDecimal totalPrice;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User basketOwner;
+    private User cartOwner;
 
-    public Cart(Long basketId, List<CartItem> productBasketItem, BigDecimal totalPrice, User basketOwner) {
+    public Cart(Long basketId, List<CartItem> cartItems, BigDecimal totalPrice, User cartOwner) {
         this.basketId = basketId;
-        this.productBasketItem = productBasketItem;
+        this.cartItems = cartItems;
         this.totalPrice = totalPrice;
-        this.basketOwner = basketOwner;
+        this.cartOwner = cartOwner;
     }
 
-    public Cart(List<CartItem> productBasketItem, User basketOwner) {
-        this.productBasketItem = productBasketItem;
-        this.basketOwner = basketOwner;
+    public Cart(List<CartItem> cartItems, User cartOwner) {
+        this.cartItems = cartItems;
+        this.cartOwner = cartOwner;
+    }
+
+    public Cart(User cartOwner) {
+        this.cartOwner = cartOwner;
     }
 
     public Cart() {
@@ -51,12 +55,12 @@ public class Cart {
         this.basketId = basketId;
     }
 
-    public List<CartItem> getProductBasketItem() {
-        return productBasketItem;
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
 
-    public void setProductBasketItem(List<CartItem> productBasketItem) {
-        this.productBasketItem = productBasketItem;
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public BigDecimal getTotalPrice() {
@@ -67,21 +71,21 @@ public class Cart {
         this.totalPrice = totalPrice;
     }
 
-    public User getBasketOwner() {
-        return basketOwner;
+    public User getCartOwner() {
+        return cartOwner;
     }
 
-    public void setBasketOwner(User basketOwner) {
-        this.basketOwner = basketOwner;
+    public void setCartOwner(User cartOwner) {
+        this.cartOwner = cartOwner;
     }
 
     @Override
     public String toString() {
         return "ProductBasket{" +
                 "basketId=" + basketId +
-                ", productBasketItem=" + productBasketItem +
+                ", productBasketItem=" + cartItems +
                 ", totalPrice=" + totalPrice +
-                ", basketOwner=" + basketOwner +
+                ", basketOwner=" + cartOwner +
                 '}';
     }
 
@@ -90,16 +94,16 @@ public class Cart {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cart that = (Cart) o;
-        return Objects.equals(basketId, that.basketId) && Objects.equals(productBasketItem, that.productBasketItem) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(basketOwner, that.basketOwner);
+        return Objects.equals(basketId, that.basketId) && Objects.equals(cartItems, that.cartItems) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(cartOwner, that.cartOwner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(basketId, productBasketItem, totalPrice, basketOwner);
+        return Objects.hash(basketId, cartItems, totalPrice, cartOwner);
     }
 
     public void addCartItem(CartItem cartItem) {
-        this.productBasketItem.add(cartItem);
+        this.cartItems.add(cartItem);
         cartItem.setProductBasket(this);
     }
 }
