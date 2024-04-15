@@ -30,7 +30,8 @@ public class Mapper {
                 userDto.firstName(),
                 userDto.lastName(),
                 userDto.email(),
-                userDto.dayOfBirth()
+                userDto.dayOfBirth(),
+                new Cart()
         );
     }
 

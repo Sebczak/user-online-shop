@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_basket")
+@Table(name = "cart")
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "basket_id")
+    @Column(name = "cart_id")
     private Long basketId;
     @OneToMany(
             targetEntity = CartItem.class,
@@ -111,8 +111,6 @@ public class Cart {
 
     public void removeCartItem(CartItem cartItem) {
         this.cartItems.remove(cartItem);
-        cartItem.setProduct(null);
-        cartItem.setCartItemId(null);
-        cartItem.setQuantityOfCartItemsInCart(0);
+        cartItem.setCartItem(this);
     }
 }

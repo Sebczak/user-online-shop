@@ -15,6 +15,7 @@ import com.company.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -68,11 +69,12 @@ public class CartService {
         cartItem.setQuantityOfCartItemsInCart(addCartItemRequest.quantity());
 
         cart.addCartItem(cartItem);
+        System.out.println(calculateCartTotalPrice(cart.getCartItems()));
 
         cartRepository.save(cart);
     }
 
-    public void deleteProductFromCart(RemoveCartItemRequest removeCartItemRequest) {
+    public void removeCartItemFromCart(RemoveCartItemRequest removeCartItemRequest) {
         Cart cart = cartRepository.findById(removeCartItemRequest.cartId())
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.CART_NOT_FOUND, removeCartItemRequest.cartId())));
 
@@ -80,6 +82,8 @@ public class CartService {
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.CART_ITEM_ID_NOT_FOUND, removeCartItemRequest.cartItemId())));
 
         cart.removeCartItem(cartItem);
+
+        cartItemRepository.delete(cartItem);
         cartRepository.save(cart);
     }
 
@@ -93,7 +97,15 @@ public class CartService {
         }
     }
 
-    public void reduceQuantityOrProductsWhenProductIsAddedToBasket(Product product, Cart cart) {
+    private BigDecimal calculateCartTotalPrice(List<CartItem> cartItems) {
 
+        BigDecimal totalPrice = BigDecimal.ZERO;
+
+        for (CartItem cartItem : cartItems) {
+            BigDecimal productPrice = cartItem.getProduct().getPrice();
+            totalPrice = totalPrice.add(productPrice.multiply(new BigDecimal(cartItem.getQuantityOfCartItemsInCart())));
+        }
+
+        return totalPrice;
     }
 }

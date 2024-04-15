@@ -40,7 +40,7 @@ public class CartController {
 
     @PutMapping(path = "/remove")
     public void deleteProductFromCart(@RequestBody RemoveCartItemRequest removeCartItemRequest) {
-        cartService.deleteProductFromCart(removeCartItemRequest);
+        cartService.removeCartItemFromCart(removeCartItemRequest);
     }
 
     @DeleteMapping(path = "{cartId}")
