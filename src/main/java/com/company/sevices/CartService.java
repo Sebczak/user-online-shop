@@ -2,9 +2,10 @@ package com.company.sevices;
 
 import com.company.Messages;
 import com.company.domain.AddCartItemRequest;
-import com.company.entities.Product;
+import com.company.domain.RemoveCartItemRequest;
 import com.company.entities.Cart;
 import com.company.entities.CartItem;
+import com.company.entities.Product;
 import com.company.entities.User;
 import com.company.mapper.Mapper;
 import com.company.repositories.CartItemRepository;
@@ -14,6 +15,7 @@ import com.company.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -33,7 +35,7 @@ public class CartService {
         this.mapper = mapper;
     }
 
-    public List<Cart> getAllProductsFromBasket() {
+    public List<Cart> getProductsFromCart() {
         return cartRepository.findAll();
     }
 
@@ -41,60 +43,69 @@ public class CartService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.USER_NOT_FOUND, userId)));
 
-        Cart cart = user.getProductBucket();
+        Cart cart = user.getCart();
         if (cart == null) {
             cart = new Cart();
-            user.setProductBucket(cart);
-            cart.setBasketOwner(user);
+            user.setCart(cart);
+            cart.setCartOwner(user);
         }
 
         userRepository.save(user);
-        //productBasketRepository.save(productBasket);
     }
 
     public void updateProductBasket(Long basketId, @RequestBody Cart cart) {
         Cart basket = cartRepository.findById(basketId)
-                .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId)));
+                .orElseThrow(() -> new IllegalStateException(String.format(Messages.CART_NOT_FOUND, basketId)));
 
     }
 
     public void addProductToBasket(AddCartItemRequest addCartItemRequest) {
-        Cart cart = cartRepository.findById(addCartItemRequest.cartId()).orElseThrow(() -> new IllegalStateException("Cart not found"));
+        Cart cart = cartRepository.findById(addCartItemRequest.cartId()).orElseThrow(() -> new IllegalStateException(String.format(Messages.CART_NOT_FOUND, addCartItemRequest.cartId())));
 
-        Product product = productRepository.findById(addCartItemRequest.productId()).orElseThrow(() -> new IllegalStateException("Product not found"));
+        Product product = productRepository.findById(addCartItemRequest.productId()).orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, addCartItemRequest.productId())));
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
-        cartItem.setQuantityOfProductItemsInBasket(addCartItemRequest.quantity());
+        cartItem.setQuantityOfCartItemsInCart(addCartItemRequest.quantity());
 
         cart.addCartItem(cartItem);
+        System.out.println(calculateCartTotalPrice(cart.getCartItems()));
 
         cartRepository.save(cart);
     }
 
-    public void deleteProductFromBasket(Long basketId, Long productBasketItemId) {
-        Cart basket = cartRepository.findById(basketId)
-                .orElseThrow(() -> new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId)));
+    public void removeCartItemFromCart(RemoveCartItemRequest removeCartItemRequest) {
+        Cart cart = cartRepository.findById(removeCartItemRequest.cartId())
+                .orElseThrow(() -> new IllegalStateException(String.format(Messages.CART_NOT_FOUND, removeCartItemRequest.cartId())));
 
-        CartItem product = cartItemRepository.findById(productBasketItemId)
-                .orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productBasketItemId)));
+        CartItem cartItem = cartItemRepository.findById(removeCartItemRequest.cartItemId())
+                .orElseThrow(() -> new IllegalStateException(String.format(Messages.CART_ITEM_ID_NOT_FOUND, removeCartItemRequest.cartItemId())));
 
-        //basket.getProductBasketItem().remove(product);
+        cart.removeCartItem(cartItem);
 
-        cartRepository.save(basket);
+        cartItemRepository.delete(cartItem);
+        cartRepository.save(cart);
     }
 
-    public void deleteBasket(Long basketId) {
+    public void deleteCart(Long basketId) {
         boolean basketExists = cartRepository.existsById(basketId);
 
         if (basketExists) {
             cartRepository.deleteById(basketId);
         } else {
-            throw new IllegalStateException(String.format(Messages.BUCKET_NOT_FOUND, basketId));
+            throw new IllegalStateException(String.format(Messages.CART_NOT_FOUND, basketId));
         }
     }
 
-    public void reduceQuantityOrProductsWhenProductIsAddedToBasket(Product product, Cart cart) {
+    private BigDecimal calculateCartTotalPrice(List<CartItem> cartItems) {
 
+        BigDecimal totalPrice = BigDecimal.ZERO;
+
+        for (CartItem cartItem : cartItems) {
+            BigDecimal productPrice = cartItem.getProduct().getPrice();
+            totalPrice = totalPrice.add(productPrice.multiply(new BigDecimal(cartItem.getQuantityOfCartItemsInCart())));
+        }
+
+        return totalPrice;
     }
 }

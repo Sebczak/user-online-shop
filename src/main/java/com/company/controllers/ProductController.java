@@ -1,10 +1,14 @@
 package com.company.controllers;
 
+import com.company.Messages;
+import com.company.dtos.ProductDto;
 import com.company.entities.Product;
+import com.company.mapper.Mapper;
 import com.company.sevices.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,30 +17,36 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
+    private final Mapper mapper;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, Mapper mapper) {
         this.productService = productService;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getProducts();
+    public List<ProductDto> getAllProducts() {
+        List<Product> products = productService.getProducts();
+        return mapper.mapToListOfProducts(products);
     }
 
     @GetMapping(path = "{productId}")
-    public Optional<Product> getProduct(@PathVariable("productId") Long productId) {
-        return productService.getProduct(productId);
+    public Optional<ProductDto> getProduct(@PathVariable("productId") Long productId) {
+        Product product = productService.getProduct(productId).orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productId)));
+        return Optional.ofNullable(mapper.toProductDto(product));
     }
 
     @PostMapping
-    public void addProductToDb(@RequestBody Product product) {
+    public Long addProductToDb(@RequestBody Product product) {
         productService.addProductToDb(product);
+        return product.getProductId();
     }
 
     @DeleteMapping(path = "{productId}")
-    public void deleteProductFromDb(@PathVariable("productId") Long productId) {
+    public Long deleteProductFromDb(@PathVariable("productId") Long productId) {
         productService.deleteProductFromDb(productId);
+        return productId;
     }
 
     @PutMapping(path = "{productId}/productName")
@@ -50,7 +60,7 @@ public class ProductController {
     }
 
     @PutMapping(path = "{productId}/productPrice")
-    public void updateProductPrice(@PathVariable("productId") Long productId,@RequestParam(required = false) Double price) {
+    public void updateProductPrice(@PathVariable("productId") Long productId,@RequestParam(required = false) BigDecimal price) {
         productService.updateProductPrice(productId, price);
     }
 }

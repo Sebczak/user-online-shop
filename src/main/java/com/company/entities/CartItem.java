@@ -5,44 +5,44 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_basket_item")
+@Table(name = "cart_item")
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_basket_item_id")
-    private Long productBasketItemId;
+    @Column(name = "cart_item_id")
+    private Long cartItemId;
 
     @OneToOne
     private Product product;
 
-    private int quantityOfProductItemsInBasket;
+    private int quantityOfCartItemsInCart;
     @ManyToOne
-    @JoinColumn(name = "basket_id")
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    public CartItem(Long productBasketItemId, Product product, int quantityOfProductItemsInBasket, Cart cart) {
-        this.productBasketItemId = productBasketItemId;
+    public CartItem(Long cartItemId, Product product, int quantityOfCartItemsInCart, Cart cart) {
+        this.cartItemId = cartItemId;
         this.product = product;
-        this.quantityOfProductItemsInBasket = quantityOfProductItemsInBasket;
+        this.quantityOfCartItemsInCart = quantityOfCartItemsInCart;
         this.cart = cart;
     }
 
-    public CartItem(Product product, int quantityOfProductItemsInBasket, Cart cart) {
+    public CartItem(Product product, int quantityOfCartItemsInCart, Cart cart) {
         this.product = product;
-        this.quantityOfProductItemsInBasket = quantityOfProductItemsInBasket;
+        this.quantityOfCartItemsInCart = quantityOfCartItemsInCart;
         this.cart = cart;
     }
 
     public CartItem() {
     }
 
-    public Long getProductBasketItemId() {
-        return productBasketItemId;
+    public Long getCartItemId() {
+        return cartItemId;
     }
 
-    public void setProductBasketItemId(Long productBasketItemId) {
-        this.productBasketItemId = productBasketItemId;
+    public void setCartItemId(Long productBasketItemId) {
+        this.cartItemId = productBasketItemId;
     }
 
     public Product getProduct() {
@@ -53,28 +53,28 @@ public class CartItem {
         this.product = product;
     }
 
-    public Cart getProductBasket() {
+    public Cart getCartItem() {
         return cart;
     }
 
-    public void setProductBasket(Cart cart) {
+    public void setCartItem(Cart cart) {
         this.cart = cart;
     }
 
-    public int getQuantityOfProductItemsInBasket() {
-        return quantityOfProductItemsInBasket;
+    public int getQuantityOfCartItemsInCart() {
+        return quantityOfCartItemsInCart;
     }
 
-    public void setQuantityOfProductItemsInBasket(int quantityOfProductItemsInBasket) {
-        this.quantityOfProductItemsInBasket = quantityOfProductItemsInBasket;
+    public void setQuantityOfCartItemsInCart(int quantityOfProductItemsInBasket) {
+        this.quantityOfCartItemsInCart = quantityOfProductItemsInBasket;
     }
 
     @Override
     public String toString() {
         return "ProductBasketItem{" +
-                "productBasketItemId=" + productBasketItemId +
+                "productBasketItemId=" + cartItemId +
                 ", product=" + product +
-                ", quantityOfProductItemsInBasket=" + quantityOfProductItemsInBasket +
+                ", quantityOfProductItemsInBasket=" + quantityOfCartItemsInCart +
                 ", productBasket=" + cart +
                 '}';
     }
@@ -84,11 +84,11 @@ public class CartItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartItem that = (CartItem) o;
-        return quantityOfProductItemsInBasket == that.quantityOfProductItemsInBasket && Objects.equals(productBasketItemId, that.productBasketItemId) && Objects.equals(product, that.product) && Objects.equals(cart, that.cart);
+        return quantityOfCartItemsInCart == that.quantityOfCartItemsInCart && Objects.equals(cartItemId, that.cartItemId) && Objects.equals(product, that.product) && Objects.equals(cart, that.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productBasketItemId, product, quantityOfProductItemsInBasket, cart);
+        return Objects.hash(cartItemId, product, quantityOfCartItemsInCart, cart);
     }
 }

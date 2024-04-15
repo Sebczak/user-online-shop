@@ -17,7 +17,7 @@ public class User {
     private String email;
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "bucket_id")
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     public User(Long userId, String firstName, String lastName, String email, LocalDate dateOfBirth) {
@@ -31,11 +31,12 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, LocalDate dateOfBirth) {
+    public User(String firstName, String lastName, String email, LocalDate dateOfBirth, Cart cart) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.cart = cart;
     }
 
     public Long getId() {
@@ -82,11 +83,11 @@ public class User {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public Cart getProductBucket() {
+    public Cart getCart() {
         return cart;
     }
 
-    public void setProductBucket(Cart cart) {
+    public void setCart(Cart cart) {
         this.cart = cart;
     }
 
