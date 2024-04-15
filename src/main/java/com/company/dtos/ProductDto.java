@@ -1,4 +1,6 @@
 package com.company.dtos;
 
-public record ProductDto (String productName, String productDescription, int productPrice, int productQuantity) {
+import java.math.BigDecimal;
+
+public record ProductDto (String productName, String productDescription, BigDecimal productPrice, int productQuantity) {
 }

@@ -1,6 +1,7 @@
 package com.company.controllers;
 
 import com.company.domain.AddCartItemRequest;
+import com.company.domain.RemoveCartItemRequest;
 import com.company.dtos.CartDto;
 import com.company.entities.Cart;
 import com.company.mapper.Mapper;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/product_basket")
+@RequestMapping(path = "api/v1/cart")
 public class CartController {
 
     private final CartService cartService;
@@ -22,33 +23,28 @@ public class CartController {
     }
 
     @GetMapping
-    public List<CartDto> getProductsFromBasket() {
-        List<Cart> carts = cartService.getAllProductsFromBasket();
+    public List<CartDto> getProductsFromCart() {
+        List<Cart> carts = cartService.getProductsFromCart();
         return mapper.toCartDtos(carts);
     }
 
     @PostMapping("{userId}")
-    public void createBasket(@PathVariable Long userId) {
+    public void createCart(@PathVariable Long userId) {
         cartService.createBasket(userId);
     }
 
     @PutMapping
-    public void addProductToBasket(@RequestBody AddCartItemRequest addCartItemRequest) {
+    public void addProductToCart(@RequestBody AddCartItemRequest addCartItemRequest) {
         cartService.addProductToBasket(addCartItemRequest);
     }
 
-    @PutMapping(path = "{basketId}")
-    public void updateProductBasket(@PathVariable Long basketId, @RequestParam(required = false) Cart cart) {
-        cartService.updateProductBasket(basketId, cart);
+    @PutMapping(path = "/remove")
+    public void deleteProductFromCart(@RequestBody RemoveCartItemRequest removeCartItemRequest) {
+        cartService.deleteProductFromCart(removeCartItemRequest);
     }
 
-    @DeleteMapping(path = "{basketId}/{productId}")
-    public void deleteProductFromBasket(@PathVariable Long basketId,@PathVariable Long productId) {
-        cartService.deleteProductFromBasket(basketId, productId);
-    }
-
-    @DeleteMapping(path = "{basketId}")
-    public void deleteBasket(@PathVariable Long basketId) {
-        cartService.deleteBasket(basketId);
+    @DeleteMapping(path = "{cartId}")
+    public void deleteCart(@PathVariable Long cartId) {
+        cartService.deleteCart(cartId);
     }
 }

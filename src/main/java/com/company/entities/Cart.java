@@ -1,5 +1,6 @@
 package com.company.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ public class Cart {
     private BigDecimal totalPrice;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User cartOwner;
 
     public Cart(Long basketId, List<CartItem> cartItems, BigDecimal totalPrice, User cartOwner) {
@@ -104,6 +106,13 @@ public class Cart {
 
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
-        cartItem.setProductBasket(this);
+        cartItem.setCartItem(this);
+    }
+
+    public void removeCartItem(CartItem cartItem) {
+        this.cartItems.remove(cartItem);
+        cartItem.setProduct(null);
+        cartItem.setCartItemId(null);
+        cartItem.setQuantityOfCartItemsInCart(0);
     }
 }

@@ -67,11 +67,11 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProductPrice(Long productId, Double price) {
+    public void updateProductPrice(Long productId, BigDecimal price) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalStateException(String.format(Messages.PRODUCT_ID_NOT_FOUND, productId)));
-        if (price != null && !price.isNaN()) {
-            product.setPrice(new BigDecimal(price));
+        if (price != null) {
+            product.setPrice(new BigDecimal(String.valueOf(price)));
         }
     }
 }

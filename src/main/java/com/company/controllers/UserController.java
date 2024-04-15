@@ -34,13 +34,15 @@ public class UserController {
     }
 
     @PostMapping
-    public void registerNewUser(@RequestBody User user) {
+    public Long registerNewUser(@RequestBody User user) {
         userService.addNewUser(user);
+        return user.getId();
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
+    public Long deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
+        return userId;
     }
 
     @PutMapping(path = "{userId}")
