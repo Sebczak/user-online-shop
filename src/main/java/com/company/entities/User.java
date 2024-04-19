@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 @Entity
 @Table(name = "\"application_user\"")
@@ -93,13 +94,25 @@ public class User {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+        return "User{" +
+                "dateOfBirth=" + dateOfBirth +
                 ", email='" + email + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", age=" + getAge() +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", userId=" + userId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(dateOfBirth, user.dateOfBirth);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, firstName, lastName, email, dateOfBirth);
     }
 }

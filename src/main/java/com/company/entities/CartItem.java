@@ -53,11 +53,11 @@ public class CartItem {
         this.product = product;
     }
 
-    public Cart getCartItem() {
+    public Cart getCart() {
         return cart;
     }
 
-    public void setCartItem(Cart cart) {
+    public void setCart(Cart cart) {
         this.cart = cart;
     }
 
@@ -71,11 +71,10 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "ProductBasketItem{" +
-                "productBasketItemId=" + cartItemId +
+        return "CartItem{" +
+                "quantityOfCartItemsInCart=" + quantityOfCartItemsInCart +
                 ", product=" + product +
-                ", quantityOfProductItemsInBasket=" + quantityOfCartItemsInCart +
-                ", productBasket=" + cart +
+                ", cartItemId=" + cartItemId +
                 '}';
     }
 
@@ -83,12 +82,12 @@ public class CartItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CartItem that = (CartItem) o;
-        return quantityOfCartItemsInCart == that.quantityOfCartItemsInCart && Objects.equals(cartItemId, that.cartItemId) && Objects.equals(product, that.product) && Objects.equals(cart, that.cart);
+        CartItem cartItem = (CartItem) o;
+        return quantityOfCartItemsInCart == cartItem.quantityOfCartItemsInCart && Objects.equals(cartItemId, cartItem.cartItemId) && Objects.equals(product, cartItem.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cartItemId, product, quantityOfCartItemsInCart, cart);
+        return Objects.hash(cartItemId, product, quantityOfCartItemsInCart);
     }
 }

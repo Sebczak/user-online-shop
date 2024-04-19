@@ -33,12 +33,12 @@ public class CartController {
         cartService.createBasket(userId);
     }
 
-    @PutMapping
+    @PutMapping("/item")
     public void addProductToCart(@RequestBody AddCartItemRequest addCartItemRequest) {
         cartService.addProductToBasket(addCartItemRequest);
     }
 
-    @PutMapping(path = "/remove")
+    @DeleteMapping("/item")
     public void deleteProductFromCart(@RequestBody RemoveCartItemRequest removeCartItemRequest) {
         cartService.removeCartItemFromCart(removeCartItemRequest);
     }
