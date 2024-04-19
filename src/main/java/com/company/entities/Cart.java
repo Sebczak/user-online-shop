@@ -1,6 +1,5 @@
 package com.company.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -15,7 +14,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private Long basketId;
+    private Long cartId;
     @OneToMany(
             targetEntity = CartItem.class,
             mappedBy = "cart",
@@ -27,11 +26,10 @@ public class Cart {
     private BigDecimal totalPrice;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User cartOwner;
 
-    public Cart(Long basketId, List<CartItem> cartItems, BigDecimal totalPrice, User cartOwner) {
-        this.basketId = basketId;
+    public Cart(Long cartId, List<CartItem> cartItems, BigDecimal totalPrice, User cartOwner) {
+        this.cartId = cartId;
         this.cartItems = cartItems;
         this.totalPrice = totalPrice;
         this.cartOwner = cartOwner;
@@ -49,12 +47,12 @@ public class Cart {
     public Cart() {
     }
 
-    public Long getBasketId() {
-        return basketId;
+    public Long getCartId() {
+        return cartId;
     }
 
-    public void setBasketId(Long basketId) {
-        this.basketId = basketId;
+    public void setCartId(Long basketId) {
+        this.cartId = basketId;
     }
 
     public List<CartItem> getCartItems() {
@@ -83,11 +81,11 @@ public class Cart {
 
     @Override
     public String toString() {
-        return "ProductBasket{" +
-                "basketId=" + basketId +
-                ", productBasketItem=" + cartItems +
+        return "Cart{" +
+                "cartId=" + cartId +
+                ", cartItems=" + cartItems +
                 ", totalPrice=" + totalPrice +
-                ", basketOwner=" + cartOwner +
+                ", cartOwner=" + cartOwner +
                 '}';
     }
 
@@ -95,22 +93,22 @@ public class Cart {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cart that = (Cart) o;
-        return Objects.equals(basketId, that.basketId) && Objects.equals(cartItems, that.cartItems) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(cartOwner, that.cartOwner);
+        Cart cart = (Cart) o;
+        return Objects.equals(cartId, cart.cartId) && Objects.equals(cartItems, cart.cartItems) && Objects.equals(totalPrice, cart.totalPrice) && Objects.equals(cartOwner, cart.cartOwner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(basketId, cartItems, totalPrice, cartOwner);
+        return Objects.hash(cartId, cartItems, totalPrice, cartOwner);
     }
 
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
-        cartItem.setCartItem(this);
+        cartItem.setCart(this);
     }
 
     public void removeCartItem(CartItem cartItem) {
         this.cartItems.remove(cartItem);
-        cartItem.setCartItem(this);
+        cartItem.setCart(this);
     }
 }

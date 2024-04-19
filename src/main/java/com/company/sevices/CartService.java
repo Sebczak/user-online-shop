@@ -69,7 +69,6 @@ public class CartService {
         cartItem.setQuantityOfCartItemsInCart(addCartItemRequest.quantity());
 
         cart.addCartItem(cartItem);
-        System.out.println(calculateCartTotalPrice(cart.getCartItems()));
 
         cartRepository.save(cart);
     }

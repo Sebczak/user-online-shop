@@ -18,13 +18,11 @@ public class UserController {
 
     private final UserService userService;
     private final Mapper mapper;
-    private final CartService cartService;
 
     @Autowired
-    public UserController(UserService userService, Mapper mapper, CartService cartService) {
+    public UserController(UserService userService, Mapper mapper) {
         this.userService = userService;
         this.mapper = mapper;
-        this.cartService = cartService;
     }
 
     @GetMapping
